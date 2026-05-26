@@ -1,37 +1,17 @@
-import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { relations } from 'drizzle-orm';
+import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
-
-export const uf = sqliteTable('uf', {
+export const users = sqliteTable('users', {
   id: text('id').primaryKey(),
-  nome: text('nome').notNull(),
-  sigla: text('sigla').notNull().unique(),
+  name: text('name').notNull(),
+  email: text('email').notNull(),
+  isZeloPrime: integer('is_zelo_prime', { mode: 'boolean' }).default(false),
 });
 
-
-export const cidade = sqliteTable('cidade', {
+export const professionals = sqliteTable('professionals', {
   id: text('id').primaryKey(),
-  nome: text('nome').notNull(),
-  ufId: text('uf_id').notNull().references(() => uf.id),
+  name: text('name').notNull(),
+  category: text('category').notNull(),
+  rating: text('rating').default('5.0'),
+  phone: text('phone').notNull(),
+  isPrime: integer('is_prime', { mode: 'boolean' }).default(false),
 });
-
-
-export const regiao = sqliteTable('regiao', {
-  id: text('id').primaryKey(),
-  nome: text('nome').notNull(),
-  cidadeId: text('cidade_id').notNull().references(() => cidade.id),
-});
-
-
-export const ufRelations = relations(uf, ({ many }) => ({
-  cidades: many(cidade),
-}));
-
-export const cidadeRelations = relations(cidade, ({ one, many }) => ({
-  uf: one(uf, { fields: [cidade.ufId], references: [uf.id] }),
-  regioes: many(regiao),
-}));
-
-export const regiaoRelations = relations(regiao, ({ one }) => ({
-  cidade: one(cidade, { fields: [regiao.cidadeId], references: [cidade.id] }),
-}));
