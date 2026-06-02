@@ -1,6 +1,16 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3';
-import Database from 'better-sqlite3';
-import * as schema from './schema.js';
+import { openDatabaseSync } from 'expo-sqlite';
 
-const sqlite = new Database('./database.sqlite');
-export const db = drizzle(sqlite, { schema });
+const db = openDatabaseSync('zelo.db');
+
+// Cria tabela na hora que abre
+db.execSync(`
+  CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    phone TEXT,
+    password TEXT NOT NULL
+  );
+`);
+
+export { db };

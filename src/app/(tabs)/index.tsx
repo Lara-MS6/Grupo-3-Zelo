@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { Search, Star, MapPin, Crown, Filter } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
+import { getSession } from '../../lib/auth';
 
 const profissionais = [
   {
@@ -68,6 +69,15 @@ export default function Home() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [categoriaAtiva, setCategoriaAtiva] = useState('Todos');
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    getSession().then(session => {
+      if (session?.name) {
+        setUserName(session.name);
+      }
+    });
+  }, []);
 
   const profissionaisFiltrados = profissionais.filter(p => {
     const matchSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -87,7 +97,9 @@ export default function Home() {
         <View style={styles.header}>
           <View style={styles.headerTop}>
             <View>
-              <Text style={styles.greeting}>Olá, Lara Magalhães</Text>
+              <Text style={styles.greeting}>
+                Olá, {userName || 'Visitante'}
+              </Text>
               <Text style={styles.title}>Zelo</Text>
             </View>
             <TouchableOpacity
