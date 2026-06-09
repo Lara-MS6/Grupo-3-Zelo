@@ -25,7 +25,7 @@ import {
   Crown
 } from 'lucide-react-native';
 
-// Mock de dados do usuário (substitua pela sua lógica real de auth)
+// Mock de dados do usuário
 const MOCK_USER = {
   id: '1',
   name: 'Brenda Melo',
@@ -45,135 +45,127 @@ export default function ProfileScreen() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simula carregamento dos dados do usuário
-    // Substitua por: const session = await getSession();
-    setTimeout(() => {
+    // Simular fetch de dados
+    const timer = setTimeout(() => {
       setUser(MOCK_USER);
       setLoading(false);
-    }, 500);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
-  const handleLogout = async () => {
-    // Substitua por: await logout();
-    router.replace('/(auth)/login');
-  };
-
+  // CORRIGIDO: Rotas mapeadas para as telas corretas fora de (tabs)
   const menuItems = [
-    { 
-      icon: CreditCard, 
-      label: 'Métodos de Pagamento', 
-      onPress: () => router.push('/payment')  // ← CORRIGIDO: navega para tela de pagamento
-    },
-    { 
-      icon: Heart, 
-      label: 'Profissionais Favoritos', 
-      onPress: () => {} 
-    },
-    { 
-      icon: MapPin, 
-      label: 'Endereços Salvos', 
-      onPress: () => {} 
-    },
-    { 
-      icon: Clock, 
-      label: 'Histórico de Serviços', 
-      onPress: () => router.push('/(tabs)/orders') 
-    },
-    { 
-      icon: Settings, 
-      label: 'Configurações', 
-      onPress: () => {} 
-    },
+    { id: 'data', icon: User, text: 'Meus Dados', route: '/profile/edit' },
+    { id: 'payment', icon: CreditCard, text: 'Formas de Pagamento', route: '/payment' },
+    { id: 'favorites', icon: Heart, text: 'Profissionais Favoritos', route: '/profile/favorites' }, // ← Aponta para a nova pasta na raiz
+    { id: 'addresses', icon: MapPin, text: 'Meus Endereços', route: '/profile/addresses' },
+    { id: 'history', icon: Clock, text: 'Histórico de Serviços', route: '/profile/history' },
+    { id: 'settings', icon: Settings, text: 'Configurações', route: '/profile/settings' },
   ];
 
   if (loading) {
     return (
-      <SafeAreaView style={[styles.container, styles.center]}>
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#5B21B6" />
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView 
-        style={styles.scroll}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Perfil</Text>
-        </View>
-
-        {/* Card do Usuário */}
-        <View style={styles.userCard}>
-          <View style={styles.userHeader}>
-            <Image 
-              source={{ uri: user?.avatar }} 
-              style={styles.avatar}
-            />
-            <View style={styles.userInfo}>
-              <Text style={styles.userName}>{user?.name || 'Usuário'}</Text>
-              <Text style={styles.userLocation}>{user?.location || 'Localização não informada'}</Text>
-            </View>
-          </View>
-
-          {/* Stats */}
-          <View style={styles.statsContainer}>
-            <View style={styles.statItem}>
-              <Text style={styles.statLabel}>Total de pedidos</Text>
-              <Text style={styles.statValue}>({user?.totalOrders || 0})</Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}>
-              <Text style={styles.statLabel}>Avaliação</Text>
-              <Text style={styles.statValue}>({user?.rating?.toFixed(1) || '0.0'})</Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}>
-              <Text style={styles.statLabel}>Cupons</Text>
-              <Text style={styles.statValue}>({user?.coupons || 0})</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Menu Principal */}
-        <View style={styles.menuSection}>
-          {menuItems.map((item, index) => (
-            <TouchableOpacity 
-              key={index} 
-              style={styles.menuItem}
-              onPress={item.onPress}
-            >
-              <View style={styles.menuItemLeft}>
-                <View style={styles.menuIconContainer}>
-                  <item.icon size={20} color="#5B21B6" />
-                </View>
-                <Text style={styles.menuItemText}>{item.label}</Text>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Header/Perfil */}
+        <View style={styles.profileHeader}>
+          <View style={styles.avatarContainer}>
+            <Image source={{ uri: user?.avatar }} style={styles.avatar} />
+            {user?.isPrime && (
+              <View style={styles.primeBadge}>
+                <Crown size={12} color="#FFFFFF" fill="#FFFFFF" />
               </View>
-              <ChevronRight size={20} color="#9CA3AF" />
-            </TouchableOpacity>
-          ))}
+            )}
+          </View>
+          <Text style={styles.userName}>{user?.name}</Text>
+          <Text style={styles.userLocation}>{user?.location}</Text>
         </View>
 
-        {/* Botões inferiores */}
+        {/* Stats Card */}
+        <View style={styles.statsContainer}>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{user?.totalOrders}</Text>
+            <Text style={styles.statLabel}>Serviços</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{user?.rating}</Text>
+            <Text style={styles.statLabel}>Avaliação</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{user?.coupons}</Text>
+            <Text style={styles.statLabel}>Cupons</Text>
+          </View>
+        </View>
+
+        {/* Informações de Contato */}
+        <View style={styles.infoSection}>
+          <Text style={styles.sectionTitle}>Informações de Contato</Text>
+          <View style={styles.infoCard}>
+            <View style={styles.infoItem}>
+              <Mail size={18} color="#6B7280" />
+              <Text style={styles.infoText}>{user?.email}</Text>
+            </View>
+            <View style={styles.infoDivider} />
+            <View style={styles.infoItem}>
+              <Phone size={18} color="#6B7280" />
+              <Text style={styles.infoText}>{user?.phone}</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Menu de Opções */}
+        <View style={styles.menuSection}>
+          <Text style={styles.sectionTitle}>Menu</Text>
+          <View style={styles.menuContainer}>
+            {menuItems.map((item, index) => {
+              const IconComponent = item.icon;
+              return (
+                <View key={item.id}>
+                  <TouchableOpacity 
+                    style={styles.menuItem}
+                    onPress={() => {
+                      if (item.route) {
+                        router.push(item.route);
+                      }
+                    }}
+                    activeOpacity={0.7}
+                  >
+                    <View style={styles.menuItemLeft}>
+                      <View style={styles.menuIconContainer}>
+                        <IconComponent size={20} color="#5B21B6" />
+                      </View>
+                      <Text style={styles.menuItemText}>{item.text}</Text>
+                    </View>
+                    <ChevronRight size={20} color="#9CA3AF" />
+                  </TouchableOpacity>
+                  {index < menuItems.length - 1 && <View style={styles.menuDivider} />}
+                </View>
+              );
+            })}
+          </View>
+        </View>
+
+        {/* Botões de Ação Inferiores */}
         <View style={styles.bottomButtons}>
-          <TouchableOpacity style={styles.helpButton}>
-            <HelpCircle size={18} color="#5B21B6" />
-            <Text style={styles.helpButtonText}>Ajuda</Text>
+          <TouchableOpacity style={styles.helpButton} activeOpacity={0.7}>
+            <HelpCircle size={20} color="#374151" />
+            <Text style={styles.helpButtonText}>Ajuda & Suporte</Text>
           </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={styles.logoutButton}
-            onPress={handleLogout}
-          >
-            <LogOut size={18} color="#EF4444" />
-            <Text style={styles.logoutButtonText}>Sair</Text>
+
+          <TouchableOpacity style={styles.logoutButton} activeOpacity={0.7}>
+            <LogOut size={20} color="#EF4444" />
+            <Text style={styles.logoutButtonText}>Sair da Conta</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Espaço no final */}
-        <View style={styles.bottomSpace} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -184,50 +176,42 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F9FAFB',
   },
-  center: {
+  loadingContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#F9FAFB',
   },
-  scroll: {
-    flex: 1,
-  },
-  // Header
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 16,
+  profileHeader: {
     alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#111827',
-  },
-  // User Card
-  userCard: {
+    paddingVertical: 24,
     backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    padding: 24,
-    marginHorizontal: 24,
-    marginBottom: 24,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    boxShadow: '0px 2px 12px rgba(0, 0, 0, 0.06)',
+    borderBottomWidth: 1,
+    borderColor: '#F3F4F6',
   },
-  userHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 24,
+  avatarContainer: {
+    position: 'relative',
+    marginBottom: 12,
   },
   avatar: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: '#F3E8FF',
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    borderWidth: 3,
+    borderColor: '#F3E8FF',
   },
-  userInfo: {
-    marginLeft: 16,
-    flex: 1,
+  primeBadge: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#5B21B6',
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
   },
   userName: {
     fontSize: 20,
@@ -238,51 +222,94 @@ const styles = StyleSheet.create({
   userLocation: {
     fontSize: 14,
     color: '#6B7280',
+    fontWeight: '500',
   },
-  // Stats
   statsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#F9FAFB',
+    backgroundColor: '#FFFFFF',
+    marginHorizontal: 24,
+    marginTop: -20,
     borderRadius: 16,
-    padding: 16,
+    paddingVertical: 16,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 8,
+    elevation: 2,
   },
   statItem: {
-    alignItems: 'center',
     flex: 1,
+    alignItems: 'center',
   },
-  statDivider: {
-    width: 1,
-    height: 40,
-    backgroundColor: '#E5E7EB',
+  statNumber: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 2,
   },
   statLabel: {
     fontSize: 12,
     color: '#6B7280',
     fontWeight: '500',
-    marginBottom: 4,
   },
-  statValue: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#111827',
+  statDivider: {
+    width: 1,
+    backgroundColor: '#E5E7EB',
+    height: '100%',
   },
-  // Menu
+  infoSection: {
+    marginTop: 24,
+    paddingHorizontal: 24,
+  },
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#6B7280',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 10,
+  },
+  infoCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    paddingHorizontal: 16,
+  },
+  infoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 14,
+    gap: 12,
+  },
+  infoText: {
+    fontSize: 15,
+    color: '#374151',
+    fontWeight: '500',
+  },
+  infoDivider: {
+    height: 1,
+    backgroundColor: '#F3F4F6',
+  },
   menuSection: {
+    marginTop: 24,
     paddingHorizontal: 24,
     marginBottom: 24,
-    gap: 12,
+  },
+  menuContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    paddingHorizontal: 16,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#FFFFFF',
-    padding: 16,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
+    paddingVertical: 16,
   },
   menuItemLeft: {
     flexDirection: 'row',
@@ -302,12 +329,15 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#374151',
   },
-  // Bottom Buttons
+  menuDivider: {
+    height: 1,
+    backgroundColor: '#F3F4F6',
+  },
   bottomButtons: {
     flexDirection: 'row',
     paddingHorizontal: 24,
     gap: 12,
-    marginBottom: 16,
+    marginBottom: 32,
   },
   helpButton: {
     flex: 1,
@@ -322,7 +352,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   helpButtonText: {
-    color: '#5B21B6',
+    color: '#374151',
     fontWeight: '600',
     fontSize: 14,
   },
@@ -335,15 +365,12 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#FECACA',
+    borderColor: '#FEE2E2',
     gap: 8,
   },
   logoutButtonText: {
     color: '#EF4444',
     fontWeight: '600',
     fontSize: 14,
-  },
-  bottomSpace: {
-    height: 32,
   },
 });

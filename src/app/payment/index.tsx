@@ -15,7 +15,8 @@ import {
   Plus, 
   CreditCard,
   QrCode,
-  Apple
+  Apple,
+  ChevronRight
 } from 'lucide-react-native';
 
 interface SavedCard {
@@ -119,38 +120,34 @@ export default function PaymentMethodsScreen(): React.JSX.Element {
         {/* Outros métodos */}
         <View style={styles.methodsContainer}>
           {/* PIX */}
-          <View style={styles.methodItem}>
+          <TouchableOpacity 
+            style={styles.methodItem} 
+            onPress={() => router.push('/payment/pix')}
+            activeOpacity={0.7}
+          >
             <View style={styles.methodLeft}>
               <View style={[styles.methodIconContainer, { backgroundColor: '#F0FDF4' }]}>
                 <QrCode size={20} color="#10B981" />
               </View>
               <Text style={styles.methodText}>PIX</Text>
             </View>
-            <Switch
-              value={pixEnabled}
-              onValueChange={setPixEnabled}
-              trackColor={{ false: '#E5E7EB', true: '#5B21B6' }}
-              thumbColor="#FFFFFF"
-              ios_backgroundColor="#E5E7EB"
-            />
-          </View>
+            <ChevronRight size={20} color="#9CA3AF" />
+          </TouchableOpacity>
 
           {/* Apple Pay */}
-          <View style={styles.methodItem}>
+          <TouchableOpacity 
+            style={styles.methodItem} 
+            onPress={() => router.push('/payment/apple-pay')} // Rota livre se futuramente criar
+            activeOpacity={0.7}
+          >
             <View style={styles.methodLeft}>
               <View style={[styles.methodIconContainer, { backgroundColor: '#F3F4F6' }]}>
                 <Apple size={20} color="#111827" />
               </View>
               <Text style={styles.methodText}>Apple Pay</Text>
             </View>
-            <Switch
-              value={applePayEnabled}
-              onValueChange={setApplePayEnabled}
-              trackColor={{ false: '#E5E7EB', true: '#5B21B6' }}
-              thumbColor="#FFFFFF"
-              ios_backgroundColor="#E5E7EB"
-            />
-          </View>
+            <ChevronRight size={20} color="#9CA3AF" />
+          </TouchableOpacity>
         </View>
 
         {/* Total e botão */}

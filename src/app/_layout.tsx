@@ -9,6 +9,7 @@ export default function RootLayout() {
       <Stack.Screen name="professional" />
       <Stack.Screen name="chat" />  
       <Stack.Screen name="payment" />
+      <Stack.Screen name="profile" />
     </Stack>
   );
 }
