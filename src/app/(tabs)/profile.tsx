@@ -57,7 +57,7 @@ export default function ProfileScreen() {
   const menuItems = [
     { id: 'data', icon: User, text: 'Meus Dados', route: '/profile/edit' },
     { id: 'payment', icon: CreditCard, text: 'Formas de Pagamento', route: '/payment' },
-    { id: 'favorites', icon: Heart, text: 'Profissionais Favoritos', route: '/profile/favorites' }, // ← Aponta para a nova pasta na raiz
+    { id: 'favorites', icon: Heart, text: 'Profissionais Favoritos', route: '/profile/favorites' },
     { id: 'addresses', icon: MapPin, text: 'Meus Endereços', route: '/profile/addresses' },
     { id: 'history', icon: Clock, text: 'Histórico de Serviços', route: '/profile/history' },
     { id: 'settings', icon: Settings, text: 'Configurações', route: '/profile/settings' },
@@ -156,7 +156,11 @@ export default function ProfileScreen() {
 
         {/* Botões de Ação Inferiores */}
         <View style={styles.bottomButtons}>
-          <TouchableOpacity style={styles.helpButton} activeOpacity={0.7}>
+          <TouchableOpacity 
+            style={styles.helpButton} 
+            activeOpacity={0.7}
+            onPress={() => router.push('/profile/help')} // ← Corrigido com sucesso aqui!
+          >
             <HelpCircle size={20} color="#374151" />
             <Text style={styles.helpButtonText}>Ajuda & Suporte</Text>
           </TouchableOpacity>
