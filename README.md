@@ -46,9 +46,13 @@ npx expo start
 
 ```
 
-Escaneie o QR Code com o aplicativo Expo Go no seu celular ou pressione w para abrir no navegador.
-Estrutura do Projeto
-plain
+4. Escaneie o QR Code com o aplicativo **Expo Go** no seu celular ou pressione **W** para abrir no navegador.
+
+---
+
+## Estrutura do Projeto
+
+```text
 src/
 ├── app/
 │   ├── (auth)/          # Telas de autenticação (login, registro)
@@ -62,13 +66,18 @@ src/
 │   ├── payment/         # Métodos de pagamento e adicionar cartão
 │   ├── professional/    # Perfil do profissional e assinatura
 │   ├── components/      # Componentes reutilizáveis
-│   ├── db/              # Banco de dados / local storage
+│   ├── db/              # Banco de dados / armazenamento local
 │   └── lib/             # Utilitários e helpers
-Equipe
-Table
-Nome	Matrícula	Função
-Alan Silva dos Santos	UC24200929	Desenvolvedor Full Stack
-Brenda de Melo da Silva	UC24200378	Desenvolvedora Front-end
-Bruna Borges Ferreira	UC24200644	Desenvolvedora Front-end
-Lara Magalhães de Santana	UC24200620	Desenvolvedora Front-end
-Mateus Nogueira Torres	UC24200334	Desenvolvedor Back-end
+```
+
+---
+
+## Equipe
+
+| Nome | Matrícula | Função |
+|-------|------------|---------|
+| Alan Silva dos Santos | UC24200929 | Desenvolvedor Full Stack |
+| Brenda de Melo da Silva | UC24200378 | Desenvolvedora Front-end |
+| Bruna Borges Ferreira | UC24200644 | Desenvolvedora Front-end |
+| Lara Magalhães de Santana | UC24200620 | Desenvolvedora Front-end |
+| Mateus Nogueira Torres | UC24200334 | Desenvolvedor Back-end |
