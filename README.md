@@ -31,22 +31,26 @@ Certifique-se de ter instalado:
 git clone https://github.com/Lara-MS6/Grupo-3-Zelo
 
 ```
+3. Acesse a pasta do projeto:
 
+```bash
+cd Grupo-3-Zelo
+```
 
-2. Instale as dependências:
+4. Instale as dependências:
 ```bash
 npm install
 
 ```
 
 
-3. Inicie o projeto:
+5. Inicie o projeto:
 ```bash
 npx expo start
 
 ```
 
-4. Escaneie o QR Code com o aplicativo **Expo Go** no seu celular ou pressione **W** para abrir no navegador.
+6. Escaneie o QR Code com o aplicativo **Expo Go** no seu celular ou pressione **W** para abrir no navegador.
 
 ---
 
