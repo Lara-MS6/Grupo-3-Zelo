@@ -46,4 +46,29 @@ npx expo start
 
 ```
 
----
+Escaneie o QR Code com o aplicativo Expo Go no seu celular ou pressione w para abrir no navegador.
+Estrutura do Projeto
+plain
+src/
+├── app/
+│   ├── (auth)/          # Telas de autenticação (login, registro)
+│   ├── (tabs)/          # Telas principais com navegação por abas
+│   │   ├── index.tsx    # Home
+│   │   ├── search.tsx   # Busca
+│   │   ├── orders.tsx   # Pedidos
+│   │   ├── messages.tsx # Mensagens
+│   │   └── profile.tsx  # Perfil
+│   ├── chat/            # Tela de chat individual
+│   ├── payment/         # Métodos de pagamento e adicionar cartão
+│   ├── professional/    # Perfil do profissional e assinatura
+│   ├── components/      # Componentes reutilizáveis
+│   ├── db/              # Banco de dados / local storage
+│   └── lib/             # Utilitários e helpers
+Equipe
+Table
+Nome	Matrícula	Função
+Alan Silva dos Santos	UC24200929	Desenvolvedor Full Stack
+Brenda de Melo da Silva	UC24200378	Desenvolvedora Front-end
+Bruna Borges Ferreira	UC24200644	Desenvolvedora Front-end
+Lara Magalhães de Santana	UC24200620	Desenvolvedora Front-end
+Mateus Nogueira Torres	UC24200334	Desenvolvedor Back-end
